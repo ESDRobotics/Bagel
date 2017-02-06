@@ -34,13 +34,9 @@ void create_drive_distance(int speed, double target_distance) {
 }
 
 void lower_claw(int position) {
-
     
-
 }
 
 void raise_claw(int position) {
-
-
 
 }
