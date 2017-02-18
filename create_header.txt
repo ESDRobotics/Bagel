@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <kipr/botball.h>
+#define slow = 20
+#define medium = 15
+#define fast = 10
+#define lift_motor 1
+#define claw_motor 0
+
+/* Function Name: Create_turn
+   This function turns the create in either clockwise or counter-clockwise directions for a specific number of degrees.
+   Arguments: Int angle, int direction
+   Returns: Nothing 
+*/
+
+void create_turn(int degrees, int direction) {
+    double turn_time = degrees*18.125;   //Converts the angle into the turn_time multiplied by 18.125 for the msleep.
+    int speed = 100 * direction;       //Determines if the robot goes forward or backwards at 100 mm/s.
+    create_spin_CW(speed); 
+    msleep(turn_time);                 //Tells the create to spin for the desired time in the desired direction and then stops the function.
+    create_stop();
+}
+
+/* Function Name: Create_drive_distance
+   This function moves the create forward a certain distance fairly accurately in centimeters at a certain speed.
+   Arguments: Int speed, double target_distance
+   Returns: Nothing
+*/
+
+void create_drive_distance(int speed, double target_distance) {
+    int current_distance = 0;
+
+    if(target_distance<=50)
+        target_distance*=1.1424; // 1.12
+    else if(target_distance<=100)
+        target_distance*=1.1688; // 1.1459
+    else if(target_distance<=150)                                 //This if loop multiplies the desired distance 
+        target_distance*=1.1867; // 1.1634                        //by a certain number depending on the distance for accuracy.
+    else if(target_distance<=200)
+        target_distance*=1.1863; // 1.163
+    else
+        target_distance*=1.2059; // 1.1823
+    
+    set_create_distance(0);
+    while(current_distance < target_distance) {
+        create_drive_straight(speed);                             //Runs the create until the reported distance is equal to the target distance.
+        msleep(10);
+        current_distance = get_create_distance();
+    }
+    
+    create_stop();
+}
+
+/* Function Name: Move_servo
+   This function moves a specific servo to a certain position at the desired speed.
+   Arguments: Int port, int position, int speed
+   Returns: Nothing
+*/
+    
+void move_servo(int port, int position, int speed){
+    int current_pos = get_servo_position(port);
+    if(position < current_pos){                                         //Starts a loop that continues until the current position is equal to the desired position
+                                                                //if the desired position is less than the current position.
+        for(current_pos; current_pos > position; current_pos -= 10){
+        	set_servo_position(port,current_pos);
+            msleep(speed);
+        }
+    }
+    if(position > current_pos){
+                                                                //Same loop as earlier but operates if the current position is less than the desired position.
+        for(current_pos; current_pos < position; current_pos += 10){
+    	    set_servo_position(port,current_pos);
+            msleep(speed);
+        }
+    }
+}
+
+/* Function Name: Lower_claw
+   This function lowers the claw.
+   Arguments: Int speed
+   Returns: Nothing
+*/
+void high_claw(int speed) {
+    while(accel_x() < 800){
+        motor(lift_motor, speed);       //Creates a while loop that raises the claw until the accelermoter X is greater than or equal to 800.
+        msleep(10);
+    }
+        motor(lift_motor,1);            //This runs the lift motor at 1 speed until the next command in order to hold it "still".
+}
+
+/* Function Name: Mid_claw
+   This function returns the claw to the middle.
+   Arguments: Int speed
+   Returns: Nothing
+*/
+
+void mid_claw(int speed) {
+        while(accel_x() < 0){
+            motor(lift_motor, speed);            //If the accelerometer X position is less than 0 (flat) then it raises the claw until it is level.
+            msleep(10);
+        }
+        while (accel_x() > 5){
+            motor(lift_motor, speed*-1);         //If the accelerometer X position is greater than 5 (just above flat) then it lowers the claw until it is level.
+            msleep(10);
+        }
+    motor(lift_motor,1);                 //Runs the motor at 1 speed until the next command in order to hold it "still".
+}
+
+/* Function Name: Low_claw
+   This function lowers the claw.
+   Arguments: Int speed
+   Returns: Nothing
+*/
+    
+void low_claw(int speed) {
+    while(accel_x() > -400){
+        motor(lift_motor, speed*-1);         //Starts a while loop that lowers the claw until it's accelerometer X is less than or equal to -400.
+        msleep(10);
+    }
+        motor(lift_motor,1);            //Runs the motor at 1 speed until the next command in order to hold it "still".
+}

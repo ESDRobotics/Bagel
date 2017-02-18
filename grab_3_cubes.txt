@@ -1,0 +1,58 @@
+#include <kipr/botball.h>
+#include <create_lib.h>
+void move_servo();
+int main()
+{
+
+    // Connect to the create
+    printf("run");
+    create_disconnect();
+    create_connect();
+    // Move forward until a bumper is collided
+    while(get_create_lbump() == 0 && get_create_lbump() == 0){create_drive_straight(100);}
+    // Angle slightly right
+    create_turn(4,-1);
+    
+    //Engage the servos
+   	set_servo_position(0,0);
+    enable_servos();
+    
+    //Open claw
+    msleep(10);
+    move_servo(0, 1800, fast);
+    
+    //Lower Claw
+    motor(0,-44);
+    msleep(3275);
+    ao();
+    
+    
+    // Close claw, open slightly, angle slightly left, and back up
+    msleep(10);
+    move_servo(0,750,slow);
+    msleep(100);
+    move_servo(0,900,slow);
+    msleep(1000);
+    create_turn(1,-1);
+    create_drive_straight(-50);
+    
+    msleep(900);
+    
+    create_drive_straight(0);
+    
+    //Close claw
+   move_servo(0,50,fast);
+  msleep(1000);
+    // Raise winch
+   // while(right_button() != 1){msleep(10);}
+   // msleep(1000);
+    motor(0,100);
+    msleep(1000);
+    motor(0,2);
+    // End program; disable servos and disconnect create; print Create battery info.
+    while(right_button() != 0){msleep(10);}
+    disable_servos();
+    printf("Battery: %d,%d", get_create_battery_charge(),get_create_battery_capacity());
+    create_disconnect();
+    return 0; 
+}
