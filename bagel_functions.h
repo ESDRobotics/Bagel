@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <kipr/botball.h>
-
 #define slow 20
 #define medium 15
 #define fast 10
