@@ -1,5 +1,7 @@
+#include <stdio.h>
 #include <kipr/botball.h>
 #include <create_lib.h>
+#include <bagel_functions.h>
 
 int main() {
     create_disconnect();
