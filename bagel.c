@@ -9,8 +9,8 @@ int main() {
     set_servo_position(0, 700);
     enable_servos();
     
-    set_lifter(high + 100, 100);
-    set_lifter(high - 50, 30);
+    set_lifter(high - 100, 100);
+    set_lifter(high + 50, 30);
     
     create_turn(45, 100, clockwise);
     create_drive_straight(100);
@@ -31,7 +31,7 @@ int main() {
     msleep(500);
 
     set_lifter(mid, 100);
-    set_lifter(low - 20, 20);
+    set_lifter(low + 20, 20);
     msleep(500);
     
     set_claw(800, fast);
@@ -39,7 +39,7 @@ int main() {
     set_claw(1400, fast);
     msleep(500);
     
-    set_lifter(low-10, 20);
+    set_lifter(low + 10, 20);
     
     set_claw(600, fast);
     msleep(500);
@@ -52,7 +52,7 @@ int main() {
     set_claw(100, fast);
     msleep(200);
 
-    set_lifter(high - 50, 100);
+    set_lifter(high + 50, 100);
     
 	create_turn(5,100, counter_clockwise);//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
@@ -83,10 +83,10 @@ int main() {
     create_drive_straight(100);
     msleep(1200);
     create_stop();
-    set_lifter(220, 100);
-    set_lifter(280, 100);
+    set_lifter(-220, 100);
+    set_lifter(-280, 100);
     set_claw(1000, slow);  
-    set_lifter(-420, 100);
+    set_lifter(420, 100);
     create_drive_straight(-100);
     msleep(1400);  
     create_stop();  
@@ -111,12 +111,12 @@ int main() {
 
     //back up, open claw, lower the claw, grab a single cube
     set_claw(500, medium);
-    set_lifter(low+20, 50);
+    set_lifter(low - 20, 50);
     create_stop();
     set_claw(100, fast);
     
     //raise claw, and reverse previous commands
-    set_lifter(medium - 200, 70);
+    set_lifter(medium + 200, 70);
     
     create_drive_straight(100);
     msleep(1000);
@@ -131,10 +131,10 @@ int main() {
     msleep(1700);
     create_stop();
     create_turn(5, 100, clockwise);
-    set_lifter(20, 50);
-    set_lifter(100, 50);
+    set_lifter(-20, 50);
+    set_lifter(-100, 50);
     set_claw(1000, slow); 
-    set_lifter(-420, 100);
+    set_lifter(420, 100);
     create_turn(5, 100, counter_clockwise);
     create_drive_straight(-100);
     msleep(300);
@@ -151,7 +151,7 @@ int main() {
     msleep(2000);
     create_stop();
     
-    set_lifter(-950, 100);
+    set_lifter(950, 100);
     
     set_claw(500, fast);
     
@@ -166,7 +166,7 @@ int main() {
     
     create_turn(175, 100, counter_clockwise);
     
-    set_lifter(-950, 100);
+    set_lifter(950, 100);
     freeze(0);
     
     create_drive_straight(100);
