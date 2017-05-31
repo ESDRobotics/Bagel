@@ -2,5 +2,10 @@
 
 void main()
 {
-    main_program();
+    setup();
+    get_cube();
+    cube34();
+    cube34();
+    drop_cubes();
+    create_disconnect();
 }
